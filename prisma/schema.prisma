@@ -1,0 +1,62 @@
+generator client {
+  provider             = "prisma-client-py"
+  interface            = "asyncio"
+  recursive_type_depth = 5
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Store {
+  SIXPM
+  BACKCOUNTRY
+  MANGODE
+  MANGOES
+}
+
+model User {
+  id            String          @id @default(uuid())
+  telegramId    String          @unique
+  email         String?         @unique
+  firstName     String?
+  lastName      String?
+  nickname      String?
+  password      String?
+  phoneNumber   String          @unique
+  linksList     ItemLink[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  StoreProposal ProposalStore[]
+}
+
+model ItemLink {
+  id        String      @id @default(uuid())
+  url       String      @unique
+  title     String
+  imgUrl    String?
+  store     Store
+  usersList User[]
+  priceList ItemPrice[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model ItemPrice {
+  id         String    @id @default(uuid())
+  price      String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  ItemLink   ItemLink? @relation(fields: [itemLinkId], references: [id])
+  itemLinkId String?
+}
+
+model ProposalStore {
+  id          String   @id @default(uuid())
+  storeName   String
+  isProcessed Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  User        User     @relation(fields: [telegramId], references: [telegramId])
+  telegramId  String
+}

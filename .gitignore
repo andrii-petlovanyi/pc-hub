@@ -1,0 +1,5 @@
+/venv
+.env
+/static/charts/*
+__pycache__/
+db.sqlite3
