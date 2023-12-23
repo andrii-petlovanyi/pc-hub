@@ -1,7 +1,11 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from .decorators import validate_api_key
 import json
 from .plugins.chart import save_chart
+from .model import PriceChartData
+from .helpers import build_validation_error
+from pydantic import ValidationError
 
 # import asyncio
 # from prisma import Prisma
@@ -19,14 +23,15 @@ def handle_post_request(data):
     }
 
 @csrf_exempt
+@validate_api_key
 def price_chart(request):
     if request.method == 'POST':
         try:
-            data = json.loads(request.body.decode('utf-8'))
-            response_data = handle_post_request(data)
+            data = PriceChartData.parse_raw(request.body.decode('utf-8'))
+            response_data = handle_post_request(data.dict())
             return JsonResponse(response_data)
-        except json.JSONDecodeError as json_error:
-            return JsonResponse({'messages': f'Error decoding JSON: {json_error}'}, status=400)
+        except ValidationError as validation_error:
+            return JsonResponse(build_validation_error(validation_error.errors()), status=400)
         except Exception as e:
             return JsonResponse({'messages': f'Error: {str(e)}', 'chartUrl': None}, status=400)
     else:
