@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.11
-          
+
       - name: Create environment file
         run: |
           echo "${{ secrets.ENV_FILE }}" > .env
@@ -43,7 +43,7 @@ jobs:
           username: ${{ secrets.REMOTE_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /pc-hub
+            cd /home/ubuntu/pc-hub
             source venv/bin/activate
             prisma db push
             exit
