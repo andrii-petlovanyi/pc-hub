@@ -22,14 +22,6 @@ jobs:
         run: |
           echo "${{ secrets.ENV_FILE }}" > .env
 
-      - name: Install dependencies
-        run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install --upgrade pip
-          pip install -r requirements.txt
-          deactivate
-
       - name: Copy files to remote server
         uses: appleboy/scp-action@master
         with:
@@ -47,7 +39,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/ubuntu/pc-hub
+            python3 -m venv venv
             source venv/bin/activate
+            pip install -r requirements.txt
             prisma db push
-            exit
+            deactivate
             pm2 restart all
