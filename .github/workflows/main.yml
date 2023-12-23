@@ -34,7 +34,7 @@ jobs:
           username: ${{ secrets.REMOTE_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: .
-          target: /pc-hub
+          target: /home/ubuntu/pc-hub
 
       - name: SSH into remote server
         uses: appleboy/ssh-action@master
