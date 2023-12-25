@@ -15,7 +15,6 @@ def validate_api_key(view_func):
             token_key = None
 
         expected_token = os.getenv('API_KEY')
-        print(expected_token)
 
         if token_key != expected_token:
             return JsonResponse({'message': "Invalid API key"}, status=401)

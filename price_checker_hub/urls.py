@@ -4,7 +4,7 @@ from django.urls import path
 from .views import price_chart
 
 urlpatterns = [
-    path('price_chart', price_chart, name='price_chart'),
+    path('price_chart', price_chart, name='price_chart')
 ]
 
 if settings.DEBUG:

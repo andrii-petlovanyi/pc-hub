@@ -1,34 +1,35 @@
+import asyncio
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .decorators import validate_api_key
 import json
 from .plugins.chart import save_chart
+from .links.views import get_link_price_and_data_list_for_the_last_month
 from .model import PriceChartData
 from .helpers import build_validation_error
 from pydantic import ValidationError
+from asgiref.sync import async_to_sync, sync_to_async
 
-# import asyncio
-# from prisma import Prisma
+async def handle_post_request(data):
+    link_id = data.get('linkId')
+    link_data = await get_link_price_and_data_list_for_the_last_month(link_id)
 
-def handle_post_request(data):
-    dates = data.get('dates', [])
-    prices = data.get('prices', [])
-    title = data.get('title')
-
-    temp_filepath = save_chart(dates, prices, title)
+    temp_filepath = save_chart(link_data['dates'], link_data['prices'], link_data['title'])
 
     return {
         'messages': 'Chart successfully generated',
         'chartUrl': temp_filepath
     }
 
+@sync_to_async
 @csrf_exempt
 @validate_api_key
-def price_chart(request):
+@async_to_sync
+async def price_chart(request):
     if request.method == 'POST':
         try:
             data = PriceChartData.parse_raw(request.body.decode('utf-8'))
-            response_data = handle_post_request(data.dict())
+            response_data = await handle_post_request(data.dict())
             return JsonResponse(response_data)
         except ValidationError as validation_error:
             return JsonResponse(build_validation_error(validation_error.errors()), status=400)
@@ -36,6 +37,8 @@ def price_chart(request):
             return JsonResponse({'messages': f'Error: {str(e)}', 'chartUrl': None}, status=400)
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+
+
 
 # TODO: temporary example for use Prisma
 # @csrf_exempt

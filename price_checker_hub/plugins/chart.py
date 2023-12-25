@@ -1,21 +1,24 @@
-import os
 from django.conf import settings
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from django.http import JsonResponse
 import seaborn
 from io import BytesIO
 from pathlib import Path
+from datetime import datetime
 
 def save_chart(dates, prices, title):
     seaborn.set()
+
+    prices = list(map(float, prices))
+
     plt.plot(dates, prices, linestyle='-', marker='o', color='b', label='Price')
     plt.ylabel('Price')
     plt.xlabel('Date of change price')
     plt.title(title)
     plt.legend()
     plt.xticks(ha='right', rotation=45, fontsize=7)
+    plt.yticks(range(int(min(prices)), int(max(prices)+5), 5))
     plt.subplots_adjust(bottom=0.2)
 
     buffer = BytesIO()
@@ -23,7 +26,9 @@ def save_chart(dates, prices, title):
     buffer.seek(0)
     plt.close()
 
-    temp_filename = f'chart_{title}.png'
+    current_date = datetime.now().strftime("%Y%m%d%H%M%S")
+    title = title.replace(' ', '-')
+    temp_filename = f'chart_{title}_{current_date}.png'
     charts_dir = Path(settings.MEDIA_ROOT) / 'charts'
 
     if not charts_dir.is_dir():

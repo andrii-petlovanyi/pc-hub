@@ -43,5 +43,5 @@ jobs:
             source venv/bin/activate
             pip install -r requirements.txt
             prisma db push
-            exit
+            deactivate
             pm2 restart all
