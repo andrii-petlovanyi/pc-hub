@@ -44,4 +44,4 @@ jobs:
             pip install -r requirements.txt
             prisma db push
             deactivate
-            pm2 restart all
+            /root/.nvm/versions/node/v18.19.0/bin/pm2 restart all
