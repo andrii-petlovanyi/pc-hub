@@ -27,7 +27,10 @@ def save_chart(dates, prices, title):
     plt.close()
 
     current_date = datetime.now().strftime("%Y%m%d%H%M%S")
-    title = title.replace(' ', '-')
+    invalid_chars = [' ', '\\', '|', '/', "'", '"']
+    for char in invalid_chars:
+        title = title.replace(char, '-')
+
     temp_filename = f'chart_{title}_{current_date}.png'
     charts_dir = Path(settings.MEDIA_ROOT) / 'charts'
 
