@@ -1,5 +1,6 @@
 /venv
 .env
 /static/charts/*
+/price_checker_hub/static/charts/*
 __pycache__/
 db.sqlite3
