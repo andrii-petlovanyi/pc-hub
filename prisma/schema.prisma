@@ -16,6 +16,7 @@ enum Store {
   MANGOES
   MACYS
   ZAPPOS
+  ZARAES
 }
 
 model User {
