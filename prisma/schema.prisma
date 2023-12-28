@@ -39,6 +39,7 @@ model ItemLink {
   title     String
   imgUrl    String?
   store     Store
+  isActive  Boolean     @default(true)
   usersList User[]
   priceList ItemPrice[]
   createdAt DateTime    @default(now())
@@ -61,4 +62,23 @@ model ProposalStore {
   createdAt   DateTime @default(now())
   User        User     @relation(fields: [telegramId], references: [telegramId])
   telegramId  String
+}
+
+model StoreCronTime {
+  id                String   @id @default(uuid())
+  store             Store
+  cronTime          String
+  processActiveLink Boolean  @default(true)
+  createdAt         DateTime @default(now()) @db.Timestamp()
+  updatedAt         DateTime @updatedAt @db.Timestamp()
+  CronJob           CronJob?
+}
+
+model CronJob {
+  id              String        @id @default(uuid())
+  cronJobId       String        @unique
+  storeCronTime   StoreCronTime @relation(fields: storeCronTimeId, references: id)
+  storeCronTimeId String        @unique
+  createdAt       DateTime      @default(now()) @db.Timestamp()
+  updatedAt       DateTime      @updatedAt @db.Timestamp()
 }
