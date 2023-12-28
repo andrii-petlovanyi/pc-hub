@@ -17,6 +17,7 @@ enum Store {
   MACYS
   ZAPPOS
   ZARAES
+  VICTORIASSECRETUS
 }
 
 model User {
