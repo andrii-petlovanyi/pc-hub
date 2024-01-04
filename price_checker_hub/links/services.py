@@ -14,7 +14,9 @@ async def get_link_price_list_for_the_last_month(link_id):
             where={
                 "id": link_id,
             },
-            include={"priceList": True}
+            include={"priceList": {
+                "where": {"createdAt": {"gte": thirty_days_ago}},
+            }},
         )
 
         if item_link_with_recent_prices.id:
