@@ -24,21 +24,57 @@ enum Store {
   BENETTONUS
   BERSHKAUS
   SNEAKERSNSTUFFUS
+  GAPUS
+  BANANAREPUBLICUS
+  OLDNAVYUS
+  ATHLETAUS
+  GAPFACTORYUS
+  BANANAREPUBLICFACTORYUS
+  FOREVER21US
+}
+
+enum SubscriptionModelType {
+  STARTER
+  ADVANCED
+  PREMIUM
+  INFINITE
 }
 
 model User {
-  id            String          @id @default(uuid())
-  telegramId    String          @unique
-  email         String?         @unique
-  firstName     String?
-  lastName      String?
-  nickname      String?
-  password      String?
-  phoneNumber   String          @unique
-  linksList     ItemLink[]
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  StoreProposal ProposalStore[]
+  id             String          @id @default(uuid())
+  telegramId     String          @unique
+  email          String?         @unique
+  firstName      String?
+  lastName       String?
+  nickname       String?
+  password       String?
+  phoneNumber    String          @unique
+  linksList      ItemLink[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  StoreProposal  ProposalStore[]
+  subscriptionId String?
+  subscription   Subscription?
+}
+
+model SubscriptionModel {
+  id            String                @id @default(uuid())
+  name          String
+  type          SubscriptionModelType
+  description   String?
+  price         String
+  linksLimit    Int
+  subscriptions Subscription[]
+}
+
+model Subscription {
+  id                String            @id @default(uuid())
+  startDate         DateTime          @default(now()) @db.Timestamp()
+  endDate           DateTime
+  user              User              @relation(fields: userId, references: id)
+  userId            String            @unique
+  subscriptionModel SubscriptionModel @relation(fields: modelId, references: id)
+  modelId           String
 }
 
 model ItemLink {
