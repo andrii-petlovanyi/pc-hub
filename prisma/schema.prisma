@@ -57,7 +57,7 @@ model User {
   linksList      ItemLink[]
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
-  StoreProposal  ProposalStore[]
+  storeProposal  ProposalStore[]
   subscriptionId String?
   subscription   Subscription?
 }
@@ -89,6 +89,8 @@ model Subscription {
   userId            String            @unique
   subscriptionModel SubscriptionModel @relation(fields: modelId, references: id)
   modelId           String
+  createdAt         DateTime          @default(now()) @db.Timestamp()
+  updatedAt         DateTime          @updatedAt @db.Timestamp()
 }
 
 model ItemLink {
@@ -120,7 +122,7 @@ model ProposalStore {
   storeName   String
   isProcessed Boolean  @default(false)
   createdAt   DateTime @default(now())
-  User        User     @relation(fields: [telegramId], references: [telegramId])
+  user        User     @relation(fields: [telegramId], references: [telegramId])
   telegramId  String
 }
 
