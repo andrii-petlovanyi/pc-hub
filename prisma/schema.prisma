@@ -36,6 +36,7 @@ enum Store {
   ASHFORD
   IHERBUS
   IHERBUA
+  CKUS
 }
 
 enum SubscriptionModelType {
