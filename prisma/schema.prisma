@@ -37,6 +37,9 @@ enum Store {
   IHERBUS
   IHERBUA
   CKUS
+  LEVISUS
+  LEVISGB
+  LEVISPL
 }
 
 enum SubscriptionModelType {
