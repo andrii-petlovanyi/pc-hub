@@ -40,6 +40,7 @@ enum Store {
   LEVISUS
   LEVISGB
   LEVISPL
+  E5PUS
 }
 
 enum SubscriptionModelType {
