@@ -67,6 +67,18 @@ model User {
   subscription   Subscription?
 }
 
+model TgPagination {
+  id          String   @id @default(uuid())
+  userTgId    String
+  target      String
+  offset      Int
+  messagesIds Int[]
+  createdAt   DateTime @default(now()) @db.Timestamp()
+  updatedAt   DateTime @updatedAt @db.Timestamp()
+
+  @@unique([userTgId, target])
+}
+
 model AuthTgOTP {
   id          String   @id @default(uuid())
   phoneNumber String   @unique
