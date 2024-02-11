@@ -121,6 +121,7 @@ model ItemLink {
   isActive    Boolean     @default(true)
   usersList   User[]
   priceList   ItemPrice[]
+  checkCount  Int         @default(0)
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 }
@@ -169,6 +170,7 @@ model StoreInfo {
   description String?
   url         String?    @unique
   currency    String
+  isBlocked   Boolean    @default(false)
   createdAt   DateTime   @default(now()) @db.Timestamp()
   updatedAt   DateTime   @updatedAt @db.Timestamp()
   itemLink    ItemLink[]
