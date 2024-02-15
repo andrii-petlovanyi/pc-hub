@@ -119,6 +119,7 @@ model ItemLink {
   storeInfo   StoreInfo?  @relation(fields: storeInfoId, references: id)
   storeInfoId String?
   isActive    Boolean     @default(true)
+  isDeleted   Boolean     @default(false)
   usersList   User[]
   priceList   ItemPrice[]
   checkCount  Int         @default(0)
